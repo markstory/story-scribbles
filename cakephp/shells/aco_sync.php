@@ -171,6 +171,9 @@ class AcoSyncShell extends Shell {
 		$actions = get_class_methods($className);
 		$methods = array_diff($actions, $baseMethods);
 		foreach ($methods as $action) {
+			if (strpos($action, '_', 0) === 0) {
+				continue;
+			}
 			$this->_checkNode($this->rootNode . '/' . $controller . '/' . $action, $action, $node['Aco']['id']);
 		}
 		if ($cleanup) {
