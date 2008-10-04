@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><templates><template autoinsert="true" context="html_all" deleted="false" description="PHP echo block" enabled="true" name="echo">&lt;?php echo ${cursor}; ?&gt;</template><template autoinsert="true" context="html_all" deleted="false" description="PHP - foreach block" enabled="true" name="fore">&lt;?php foreach(${variable} as ${element}): ?&gt;&#13;
+	${cursor}&#13;
+&lt;?php endforeach; ?&gt;</template><template autoinsert="true" context="html_all" deleted="false" description="CakePHP - $form-&gt;create()" enabled="true" name="formc">&lt;?php echo $$form-&gt;create(${Model}); ?&gt;&#13;
+${cursor}</template><template autoinsert="true" context="html_all" deleted="false" description="CakePHP - form-&gt;end()" enabled="true" name="forme">&lt;?php echo $$form-&gt;end('${Save}'); ?&gt;&#13;
+${cursor}</template><template autoinsert="true" context="html_all" deleted="false" description="CakePHP - form-&gt;input()" enabled="true" name="formi">&lt;?php echo $$form-&gt;input(${fieldname}); ?&gt;&#13;
+${cursor}&#13;
+</template><template autoinsert="true" context="html_all" deleted="false" description="PHP if block" enabled="true" name="if">&lt;?php if(${condition}): ?&gt;&#13;
+	${cursor}&#13;
+&lt;?php endif; ?&gt;</template><template autoinsert="true" context="html_tag" deleted="false" description="CakePHP $html-&gt;image()" enabled="true" id="org.eclipse.wst.html.ui.templates.imgmap" name="img">&lt;?php echo $$html-&gt;image(${imagename}); ?&gt;&#13;
+${cursor}</template><template autoinsert="true" context="html_all" deleted="false" description="CakePHP - $html-&gt;link()" enabled="true" name="linka">&lt;?php echo $$html-&gt;link('${title}', array('action' =&gt; '${action}')); ?&gt;&#13;
+${cursor}</template><template autoinsert="true" context="html_all" deleted="false" description="CakePHP - $html-&gt;link()" enabled="true" name="linkca">&lt;?php echo $$html-&gt;link(${title}, array('controller' =&gt; '${controller}', 'action' =&gt; '${action}')); ?&gt;&#13;
+${cursor}</template></templates>
