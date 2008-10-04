@@ -1,9 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?><templates><template autoinsert="true" context="php" deleted="false" description="CakePHP - Auth-&gt;user()" enabled="true" name="authu">$$this-&gt;Auth-&gt;user(${key});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - debug() " enabled="true" name="dbg">debug(${cursor});</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Controller-&gt;redirect()" enabled="true" name="redir">$$this-&gt;redirect(${location});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Controller-&gt;referer()" enabled="true" name="refer">$$this-&gt;referer(${fallback});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;delete()" enabled="true" name="sesd">$$this-&gt;Session-&gt;delete(${key});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;read()" enabled="true" name="sesr">$$this-&gt;Session-&gt;read(${key});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;write()" enabled="true" name="sesw">$$this-&gt;Session-&gt;write(${key}, ${value});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;setFlash()" enabled="true" name="ssf">$$this-&gt;Session-&gt;setFlash(${output});&#13;
-${cursor}</template><template autoinsert="true" context="php" deleted="false" description="CakePHP - Session setFlash() with error key" enabled="true" name="ssfe">$$this-&gt;Session-&gt;setFlash(${message}, 'default', array(), 'error');&#13;
-${cursor}</template></templates>
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Auth-&gt;user()" enabled="true" name="authu">$$this-&gt;Auth-&gt;user(${key});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - debug() " enabled="true" name="dbg">debug(${cursor});</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Controller-&gt;redirect()" enabled="true" name="redir">$$this-&gt;redirect(${location});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Controller-&gt;referer()" enabled="true" name="refer">$$this-&gt;referer(${fallback});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;delete()" enabled="true" name="sesd">$$this-&gt;Session-&gt;delete(${key});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;read()" enabled="true" name="sesr">$$this-&gt;Session-&gt;read(${key});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;write()" enabled="true" name="sesw">$$this-&gt;Session-&gt;write(${key}, ${value});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Session-&gt;setFlash()" enabled="true" name="ssf">$$this-&gt;Session-&gt;setFlash(${output});&#13;
+${cursor}</template>
+	<template autoinsert="true" context="php" deleted="false" description="CakePHP - Session setFlash() with error key" enabled="true" name="ssfe">$$this-&gt;Session-&gt;setFlash(${message}, 'default', array(), 'error');&#13;
+${cursor}</template>
+</templates>
