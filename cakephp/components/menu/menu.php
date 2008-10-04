@@ -57,7 +57,7 @@ class MenuComponent extends Object {
  *
  * @var string  String compatible with strtotime.
  */
-	public $cacheTime = '+10 hours';
+	public $cacheTime = '+1 day';
 	
 /**
  * Separator between controller and action name.
@@ -196,7 +196,8 @@ class MenuComponent extends Object {
 		if (is_array($aro)) {
 			$aroKey = key($aro) . $aro[key($aro)]['id'];
 		}
-		$completeMenu = Cache::read($aroKey . '_' . $this->cacheKey);
+		$cacheKey = $aroKey . '_' . $this->cacheKey;
+		$completeMenu = Cache::read($cacheKey);
 		if (!$completeMenu || $this->_rebuildMenus == true) {
 			$this->generateRawMenus();
 			$menu = array();
@@ -214,7 +215,7 @@ class MenuComponent extends Object {
 				}
 			}
 			$completeMenu = $this->_formatMenu($menu);
-			Cache::write($aroKey . '_' . $this->cacheKey, $completeMenu, $this->cacheTime);
+			Cache::write($cacheKey, $completeMenu, $this->cacheTime);
 		}
 		$this->menu = $completeMenu;
 	}
