@@ -1,8 +1,8 @@
 <?php
 /**
- * Aco Shell.
+ * Acl Extras Shell.
  * 
- * Automates the creation of ACO nodes for CakePHP applications.
+ * Enhances the existing Acl Shell with a few handy functions
  *
  * Copyright 2008, Mark Story.
  * 823 millwood rd. 
@@ -25,7 +25,7 @@ App::import('Model', 'DbAcl');
  * @package		cake
  * @subpackage	cake.cake.console.libs
  */
-class AcoSyncShell extends Shell {
+class AclExtrasShell extends Shell {
 /**
  * Contains instance of AclComponent
  *
@@ -93,7 +93,7 @@ class AcoSyncShell extends Shell {
  *
  * @return void
  **/
-	function update() {
+	function aco_update() {
 		$root = $this->_checkNode($this->rootNode, $this->rootNode, null);
 		App::import('Core', array('Controller'));
 		
@@ -131,7 +131,7 @@ class AcoSyncShell extends Shell {
  *
  * @return void
  **/
-	function sync() {
+	function aco_sync() {
 		$this->_clean = true;
 		$this->update();
 	}
@@ -199,19 +199,25 @@ class AcoSyncShell extends Shell {
  * @access public
  */
 	function help() {
-		$head  = __("Usage: cake aco_sync <command>", true) . "\n";
+		$head  = __("Usage: cake acl_extras <command>", true) . "\n";
 		$head .= "-----------------------------------------------\n";
 		$head .= __("Commands:", true) . "\n\n";
 
 		$commands = array(
-			'update' => "\tcake aco_sync update\n" .
+			'update' => "\tcake acl_extras aco_update\n" .
 						"\t\t" . __("Add new ACOs for new controllers and actions", true) . "\n" . 
 						"\t\t" . __("Create new ACO's for controllers and their actions. Does not remove any nodes from ACO table", true), 
 
-			'sync' =>	"\tcake aco_sync sync\n" . 
+			'sync' =>	"\tcake acl_extras aco_sync\n" . 
 						"\t\tPerform a full sync on the ACO table.\n" .
 						"\t\t" . __("Creates new ACO's for missing controllers and actions. Removes orphaned entries in the ACO table.", true) . "\n",
-
+			
+			'verify' => "\tcake acl_extras verify \$type\n" .
+						"\t\t" . __('Verify the tree structure of either your Aco or Aro Trees', true),
+			
+			'recover' => "\tcake acl_extras recover \$type\n" .
+						 "\t\t" . __('Recover a corrupted Tree', true),
+						
 			'help' => 	"\thelp [<command>]\n" .
 						"\t\t" . __("Displays this help message, or a message on a specific command.", true) . "\n"
 		);
@@ -227,5 +233,46 @@ class AcoSyncShell extends Shell {
 			$this->out(sprintf(__("Command '%s' not found", true), $this->args[0]));
 		}
 	}
+/**
+ * Verify a Acl Tree
+ *
+ * @param string $type The type of Acl Node to verify
+ * @access public
+ * @return void
+ */
+	function verify() {
+		if (empty($this->args[0])) {
+			$this->err(__('Missing Type', true));
+			$this->_stop();
+		}
+		$type = Inflector::camelize($this->args[0]);
+		$return = $this->Acl->{$type}->verify();
+		if ($return === true) {
+			$this->out(__('Tree is valid and strong', true));
+		} else {
+			$this->out(print_r($return));
+		}
+	}
+/**
+ * Recover an Acl Tree
+ *
+ * @param string $type The Type of Acl Node to recover 
+ * @access public
+ * @return void
+ */
+	function recover() {
+		if (empty($this->args[0])) {
+			$this->err(__('Missing Type', true));
+			$this->_stop();
+		}
+		$type = Inflector::camelize($this->args[0]);
+		$return = $this->Acl->{$type}->recover();
+		if ($return === true) {
+			$this->out(__('Tree has been recovered, or tree did not need recovery.', true));
+		} else {
+			$this->out(__('Tree recovery failed.', true));
+		}
+	}
+
 }
 ?>
