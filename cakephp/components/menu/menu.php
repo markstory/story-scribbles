@@ -154,7 +154,8 @@ class MenuComponent extends Object {
 		$data = array(
 			'menus' => $this->rawMenus
 		);
-		if (Cache::write($this->cacheKey, $data, $this->cacheTime)) {
+		Cache::set(array('duration' => $this->cacheTime));
+		if (Cache::write($this->cacheKey, $data)) {
 			return true;
 		}
 		$this->log('Menu Component - Could not write Menu cache.');
@@ -167,6 +168,7 @@ class MenuComponent extends Object {
  * @return boolean true if cache was loaded.
  */
 	public function loadCache() {
+		Cache::set(array('duration' => $this->cacheTime));
 		if ($data = Cache::read($this->cacheKey)) {
 			$this->rawMenus = $this->_mergeMenuCache($data['menus']);
 			return true;
@@ -197,6 +199,7 @@ class MenuComponent extends Object {
 			$aroKey = key($aro) . $aro[key($aro)]['id'];
 		}
 		$cacheKey = $aroKey . '_' . $this->cacheKey;
+		Cache::set(array('duration' => $this->cacheTime));
 		$completeMenu = Cache::read($cacheKey);
 		if (!$completeMenu || $this->_rebuildMenus == true) {
 			$this->generateRawMenus();
@@ -215,7 +218,8 @@ class MenuComponent extends Object {
 				}
 			}
 			$completeMenu = $this->_formatMenu($menu);
-			Cache::write($cacheKey, $completeMenu, $this->cacheTime);
+			Cache::set(array('duration' => $this->cacheTime));
+			Cache::write($cacheKey, $completeMenu);
 		}
 		$this->menu = $completeMenu;
 	}

@@ -261,6 +261,7 @@ class MenuComponentTestCase extends CakeTestCase {
 		$this->Menu->constructMenu($aro);
 		
 		$this->assertFalse(empty($this->Menu->menu));
+		Cache::set(array('duration' => $this->Menu->cacheTime));
 		$this->assertTrue(is_array(Cache::read('AuthUser1_'. $this->Menu->cacheKey)));
 		$result = $this->Menu->menu;
 
@@ -282,6 +283,7 @@ class MenuComponentTestCase extends CakeTestCase {
 		$this->Menu->constructMenu($aro);
 		
 		$this->assertFalse(empty($this->Menu->menu));
+		Cache::set(array('duration' => $this->Menu->cacheTime));
 		$this->assertTrue(is_array(Cache::read('AuthUser1_'. $this->Menu->cacheKey)));
 		$result = $this->Menu->menu;
 		$this->assertEqual(count($result), 1);
@@ -313,6 +315,7 @@ class MenuComponentTestCase extends CakeTestCase {
 	function testClearCache() {
 		$this->Menu->generateRawMenus();
 		$this->Menu->writeCache();
+		Cache::set(array('duration' => $this->Menu->cacheTime));
 		$this->assertTrue(is_array(Cache::read($this->Menu->cacheKey)));
 	}
 /**
