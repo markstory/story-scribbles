@@ -13,7 +13,7 @@
  *
  * @copyright Copyright 2008, Mark Story.
  * @link http://mark-story.com
- * @version 0.5
+ * @version 0.5.1
  * @author Mark Story <mark@mark-story.com>
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
@@ -81,8 +81,10 @@ class AclExtrasShell extends Shell {
  */
 	function main() {
 		$out  = __("Available ACO sync commands:", true) . "\n";
-		$out .= "\t - update\n";
-		$out .= "\t - sync\n";
+		$out .= "\t - aco_update\n";
+		$out .= "\t - aco_sync\n";
+		$out .= "\t - recover \$type\n";
+		$out .= "\t - verify \$type\n";
 		$out .= "\t - help\n\n";
 		$out .= __("For help, run the 'help' command.  For help on a specific command, run 'help <command>'", true);
 		$this->out($out);
@@ -133,7 +135,7 @@ class AclExtrasShell extends Shell {
  **/
 	function aco_sync() {
 		$this->_clean = true;
-		$this->update();
+		$this->aco_update();
 	}
 
 /**
