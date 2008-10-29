@@ -78,6 +78,8 @@ class MenuComponentTestCase extends CakeTestCase {
 		$this->Controller = new TestMenuController();
 		$this->Menu->Acl = new MenuTestMockAclComponent();
 		$this->Menu->Auth = new AuthComponent();
+		$this->_admin = Configure::read('Routing.admin');
+		Configure::write('Routing.admin', 'admin');
 	}
 
 /**
@@ -136,7 +138,7 @@ class MenuComponentTestCase extends CakeTestCase {
 		$menu = array(
 			'url' => array(
 				'controller' => 'posts',
-				'action' => 'delete'
+				'action' => 'delete',
 			),
 			'id' => 'funky-id',
 			'parent' => 'posts'
@@ -189,6 +191,7 @@ class MenuComponentTestCase extends CakeTestCase {
 				'url' => array(
 					'controller' => 'posts',
 					'action' => 'add',
+					'admin' => false,
 				),
 			),
 			array(
@@ -335,7 +338,8 @@ class MenuComponentTestCase extends CakeTestCase {
 			'parent' => 'controller2',
 			'url' => array(
 				'controller' => 'controller2',
-				'action' => 'action1'
+				'action' => 'action1',
+				'admin' => false,
 			),
 			'title' => 'Action1',
 			'children' => array(),
@@ -357,7 +361,8 @@ class MenuComponentTestCase extends CakeTestCase {
 			'parent' => 'controller1',
 			'url' => array(
 				'controller' => 'controller1',
-				'action' => 'action1'
+				'action' => 'action1',
+				'admin' => false,
 			),
 			'title' => 'Action1',
 		);
@@ -379,6 +384,7 @@ class MenuComponentTestCase extends CakeTestCase {
 	function tearDown() {
 		ClassRegistry::flush();
 		$this->Menu->clearCache();
+		Configure::write('Routing.admin', $this->_admin);
 		unset($this->Menu, $this->Controller);
 	}
 }

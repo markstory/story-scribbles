@@ -276,11 +276,14 @@ class MenuComponent extends Object {
 					'controller' => $ctrlCamel,
 					'action' => $action
 				);
-
-				if (strpos($action, 'admin_') !== false && $cakeAdmin) {
+				if ($cakeAdmin) {
+					$url[$cakeAdmin] = false;
+				}
+				if (strpos($action, $cakeAdmin . '_') !== false && $cakeAdmin) {
 					$url['admin'] = true;
 					$adminController = true;
 				}
+
 				$parent = $menuOptions['controllerButton'] ? $ctrlCamel : $menuOptions['parent'];
 				$this->rawMenus[] = array(
 					'parent' => $parent,
