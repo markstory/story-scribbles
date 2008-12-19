@@ -58,7 +58,12 @@ class MenuComponent extends Object {
  * @var string  String compatible with strtotime.
  */
 	public $cacheTime = '+1 day';
-	
+/**
+ * cache config key
+ *
+ * @var string
+ */
+	public $cacheConfig = 'menu_component';
 /**
  * Separator between controller and action name.
  *
@@ -107,7 +112,6 @@ class MenuComponent extends Object {
  */
 	protected $_rebuildMenus = false;
 
-
 /**
  * initialize function
  *
@@ -134,6 +138,8 @@ class MenuComponent extends Object {
 	public function startup(&$Controller) {
 		$this->Controller =& $Controller;
 		
+		Cache::config($this->cacheConfig, array('engine' => 'File', 'duration' => $this->cacheTime, 'prefix' => $this->cacheKey));
+		
 		//no active session, no menu can be generated
 		if (!$this->Auth->user()) {
 			return;
@@ -154,8 +160,7 @@ class MenuComponent extends Object {
 		$data = array(
 			'menus' => $this->rawMenus
 		);
-		Cache::set(array('duration' => $this->cacheTime));
-		if (Cache::write($this->cacheKey, $data)) {
+		if (Cache::write($this->cacheKey, $data, $this->cacheConfig)) {
 			return true;
 		}
 		$this->log('Menu Component - Could not write Menu cache.');
@@ -168,8 +173,8 @@ class MenuComponent extends Object {
  * @return boolean true if cache was loaded.
  */
 	public function loadCache() {
-		Cache::set(array('duration' => $this->cacheTime));
-		if ($data = Cache::read($this->cacheKey)) {
+		//Cache::set(array('duration' => $this->cacheTime));
+		if ($data = Cache::read($this->cacheKey, $this->cacheConfig)) {
 			$this->rawMenus = $this->_mergeMenuCache($data['menus']);
 			return true;
 		}
@@ -184,7 +189,7 @@ class MenuComponent extends Object {
  * @return boolean
  **/
 	public function clearCache() {
-		return Cache::delete($this->cacheKey);
+		return Cache::delete($this->cacheKey, $this->cacheConfig);
 	}
 
 /**
@@ -199,8 +204,7 @@ class MenuComponent extends Object {
 			$aroKey = key($aro) . $aro[key($aro)]['id'];
 		}
 		$cacheKey = $aroKey . '_' . $this->cacheKey;
-		Cache::set(array('duration' => $this->cacheTime));
-		$completeMenu = Cache::read($cacheKey);
+		$completeMenu = Cache::read($cacheKey, $this->cacheConfig);
 		if (!$completeMenu || $this->_rebuildMenus == true) {
 			$this->generateRawMenus();
 			$menu = array();
@@ -218,8 +222,7 @@ class MenuComponent extends Object {
 				}
 			}
 			$completeMenu = $this->_formatMenu($menu);
-			Cache::set(array('duration' => $this->cacheTime));
-			Cache::write($cacheKey, $completeMenu);
+			Cache::write($cacheKey, $completeMenu, $this->cacheConfig);
 		}
 		$this->menu = $completeMenu;
 	}
@@ -240,7 +243,6 @@ class MenuComponent extends Object {
 	public function generateRawMenus() {
 		$Controllers = $this->getControllers();
 		$cakeAdmin = Configure::read('Routing.admin');
-		
 		$this->createExclusions();
 		
 		//go through the controllers folder and make an array of every menu that could be used.
@@ -280,7 +282,7 @@ class MenuComponent extends Object {
 					$url[$cakeAdmin] = false;
 				}
 				if (strpos($action, $cakeAdmin . '_') !== false && $cakeAdmin) {
-					$url['admin'] = true;
+					$url[$cakeAdmin] = true;
 					$adminController = true;
 				}
 
@@ -290,6 +292,7 @@ class MenuComponent extends Object {
 					'id' => $this->_createId($ctrlCamel, $action),
 					'title' => $human,
 					'url' => $url,
+					'weight' => 0,
 				);
 			}
 			if ($menuOptions['controllerButton']) {
@@ -305,6 +308,7 @@ class MenuComponent extends Object {
 					'id' => $ctrlCamel,
 					'title' => $ctrlHuman,
 					'url' => $url,
+					'weight' => 0
 				);
 				$this->rawMenus[] = $menuItem;
 			}
@@ -390,6 +394,7 @@ class MenuComponent extends Object {
 			'url' => null,
 			'parent' => null,
 			'id' => null,
+			'weight' => 0,
 		);
 		$menu = array_merge($defaults, $menu);
 		if (!$menu['id'] && isset($menu['url'])) {
@@ -447,9 +452,21 @@ class MenuComponent extends Object {
 				$out[] =& $idMap[$id];
 			}
 		}
+		usort($out, array(&$this, '_sortMenu'));
 		return $out;
 	}
 
+/**
+ * Sort the menu before returning it. Used with usort()
+ *
+ * @return int
+ **/
+	protected function _sortMenu($one, $two) {
+		if ($one['weight'] == $two['weight']) {
+			return 1;
+		}
+		return ($one['weight'] < $two['weight']) ? -1 : 1;
+	}
 /**
  * Merge the Cached menus with the Menus added in Controller::beforeFilter to ensure they are unique.
  *

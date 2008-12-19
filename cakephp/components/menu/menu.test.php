@@ -131,6 +131,7 @@ class MenuComponentTestCase extends CakeTestCase {
 			'id' => 'posts-delete',
 			'parent' => null,
 			'title' => 'Delete',
+			'weight' => 0
 		);
 		$this->assertEqual($this->Menu->rawMenus[0], $expected);
 		$this->Menu->rawMenus = array();
@@ -141,7 +142,8 @@ class MenuComponentTestCase extends CakeTestCase {
 				'action' => 'delete',
 			),
 			'id' => 'funky-id',
-			'parent' => 'posts'
+			'parent' => 'posts',
+			'weight' => 0
 		);
 		$this->Menu->addMenu($menu);
 		$expected = array(
@@ -152,6 +154,7 @@ class MenuComponentTestCase extends CakeTestCase {
 			'id' => 'funky-id',
 			'parent' => 'posts',
 			'title' => 'Delete',
+			'weight' => 0
 		);
 		$this->assertEqual($this->Menu->rawMenus[0], $expected);
 		$this->Menu->rawMenus = array();
@@ -342,6 +345,7 @@ class MenuComponentTestCase extends CakeTestCase {
 				'admin' => false,
 			),
 			'title' => 'Action1',
+			'weight' => 0,
 			'children' => array(),
 		);
 		$this->assertEqual($result[1]['children'][0], $expected);
@@ -365,6 +369,7 @@ class MenuComponentTestCase extends CakeTestCase {
 				'admin' => false,
 			),
 			'title' => 'Action1',
+			'weight' => 0
 		);
 		$this->assertEqual($result[0], $expected);
 
@@ -377,8 +382,49 @@ class MenuComponentTestCase extends CakeTestCase {
 				'admin' => false,
 			),
 			'title' => 'Controller1',
+			'weight' => 0,
 		);
 		$this->assertEqual($result[2], $expected);
+	}
+/**
+ * test Sorting by weight.
+ *
+ * @access public
+ * @return void
+ */	
+	function testWeightSorting() {
+		$this->Menu->Acl->setReturnValue('check', true);
+		$this->Menu->addMenu(array(
+			'title' => 'First',
+			'url' => array(
+				'controller' => 'posts',
+				'action' => 'delete'
+			),
+			'weight' => 1,
+		));
+		$this->Menu->addMenu(array(
+			'title' => 'Third',
+			'url' => array(
+				'controller' => 'posts',
+				'action' => 'more_stuff'
+			),
+			'weight' => 4,
+		));
+		$this->Menu->addMenu(array(
+			'title' => 'Second',
+			'url' => array(
+				'controller' => 'posts',
+				'action' => 'do_stuff'
+			),
+			'weight' => 2,
+		));
+		$this->Menu->constructMenu(array('User' => array('id' => 1)));
+		$result = $this->Menu->menu;
+		$this->assertEqual($result[2]['title'], 'First');
+		$this->assertEqual($result[3]['title'], 'Second');
+		$this->assertEqual($result[4]['title'], 'Third');
+
+		Cache::delete('User1_'.$this->Menu->cacheKey);
 	}
 	
 	function tearDown() {
