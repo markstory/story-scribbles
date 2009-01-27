@@ -13,7 +13,7 @@
  *
  * @copyright Copyright 2008, Mark Story.
  * @link http://mark-story.com
- * @version 1.0
+ * @version 1.1
  * @author Mark Story <mark@mark-story.com>
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
@@ -173,7 +173,6 @@ class MenuComponent extends Object {
  * @return boolean true if cache was loaded.
  */
 	public function loadCache() {
-		//Cache::set(array('duration' => $this->cacheTime));
 		if ($data = Cache::read($this->cacheKey, $this->cacheConfig)) {
 			$this->rawMenus = $this->_mergeMenuCache($data['menus']);
 			return true;
@@ -297,7 +296,7 @@ class MenuComponent extends Object {
 			}
 			if ($menuOptions['controllerButton']) {
 				//If an admin index exists use it.
-				$action = $adminController ? 'admin_index' : 'index';
+				$action = $adminController ? $cakeAdmin . '_index' : 'index';
 				$url = array(
 					'controller' => $ctrlCamel,
 					'action' => $action,
@@ -356,9 +355,18 @@ class MenuComponent extends Object {
  * @return mixed.  Array of options or false on total exclusion
  **/
 	public function setOptions($controllerVars) {
+		$cakeAdmin = Configure::read('Routing.admin');
 		$menuOptions = isset($controllerVars['menuOptions']) ? $controllerVars['menuOptions'] : array();
-		$exclude = array('view', 'edit', 'delete', 'admin_edit', 'admin_delete', 'admin_edit', 'admin_view');
-		$defaults = array('exclude' => $exclude, 'alias' => array(), 'parent' => $this->defaultMenuParent, 'controllerButton' => true);
+
+		$exclude = array('view', 'edit', 'delete', $cakeAdmin . '_edit', 
+			$cakeAdmin . '_delete', $cakeAdmin . '_edit', $cakeAdmin . '_view');
+
+		$defaults = array(
+			'exclude' => $exclude, 
+			'alias' => array(), 
+			'parent' => $this->defaultMenuParent, 
+			'controllerButton' => true
+		);
 		$menuOptions = Set::merge($defaults, $menuOptions);
 		if (in_array('*', (array)$menuOptions['exclude'])) {
 			return false;
