@@ -100,14 +100,19 @@ class VcfHelper extends AppHelper {
 	}
 
 /**
- * Create an Address element
+ * Create an Address element. Takes the following keys
  *
- * @param unknown_type $type
- * @param unknown_type $values
+ * - street
+ * - city
+ * - province
+ * - postal
+ * - country
+ *
+ * @param string $type The type of address you are making
+ * @param array $values Array of values for the address see above
  */
 	public function address($type, $values = array()) {
 		$empty = array(
-			'extras' => '',
 			'street' => '',
 			'city' => '',
 			'province' => '',
@@ -127,8 +132,9 @@ class VcfHelper extends AppHelper {
 	}
 /**
  * Escape values for vcard
- *
- * @return void
+ * 
+ * @param mixed $values Values either string or array.
+ * @return string Escaped string
  **/
 	protected function _escape($values) {
 		$find = array(':');
