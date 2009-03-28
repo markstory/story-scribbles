@@ -47,6 +47,10 @@ class VcfHelperTestCase extends CakeTestCase {
 		$result = $this->vcf->attr('timezone', '-05:00');
 		$expected = "TZ:-05\:00\n";
 		$this->assertEqual($result, $expected);
+		
+		$result = $this->vcf->attr('email', 'example@example.com');
+		$expected = "EMAIL;INTERNET:example@example.com\n";
+		$this->assertEqual($result, $expected);
 	}
 /**
  * test __call method.
@@ -73,7 +77,7 @@ class VcfHelperTestCase extends CakeTestCase {
 			'country' => 'Canada',
 			'street' => '555 somestreet rd.'
 		));
-		$expected = "ADR;HOME:;555 somestreet rd.;Toronto;Ontario;M1M 1M1;Canada;\n" .
+		$expected = "ADR;HOME:;;555 somestreet rd.;Toronto;Ontario;M1M 1M1;Canada;\n" .
 					"LABEL;POSTAL;HOME;ENCODING=QUOTED-PRINTABLE:555 somestreet rd.=0D=0AToronto, Ontario M1M 1M1=0D=0ACanada\n";
 		$this->assertEqual($result, $expected);
 
@@ -84,7 +88,7 @@ class VcfHelperTestCase extends CakeTestCase {
 			'country' => 'Canada',
 			'street' => '555 somestreet rd.'
 		));
-		$expected = "ADR;HOME:;555 somestreet rd.;Toronto;Ontario;;Canada;\n" .
+		$expected = "ADR;HOME:;;555 somestreet rd.;Toronto;Ontario;;Canada;\n" .
 					"LABEL;POSTAL;HOME;ENCODING=QUOTED-PRINTABLE:555 somestreet rd.=0D=0AToronto, Ontario =0D=0ACanada\n";
 		$this->assertEqual($result, $expected);
 

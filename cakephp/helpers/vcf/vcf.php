@@ -22,7 +22,7 @@ class VcfHelper extends AppHelper {
 		'cellPhone' => 'TEL;CELL:%value%',
 		'address' => 'ADR',
 		'birthday' => 'BDAY:%value%',
-		'email' => 'EMAIL;INTERNET::%value%',
+		'email' => 'EMAIL;INTERNET:%value%',
 		'timezone' => 'TZ:%value%',
 		'url' => 'URL:%value%',
 		'version' => 'VERSION:%value%',
@@ -123,7 +123,7 @@ class VcfHelper extends AppHelper {
 		$values['key'] = $this->_elements['address'];
 		$values['type'] = strtoupper($type);
 
-		$format = "%key%;%type%:;%street%;%city%;%province%;%postal%;%country%;";
+		$format = "%key%;%type%:;;%street%;%city%;%province%;%postal%;%country%;";
 		$adrEl = String::insert($format, $values, array('before' => '%', 'after' => '%', 'clean' => true));
 		$labelFormat = "LABEL;POSTAL;%type%;ENCODING=QUOTED-PRINTABLE:%street%=0D=0A%city%, %province% %postal%=0D=0A%country%";
 		$labelEl = String::insert($labelFormat, $values, array('before' => '%', 'after' => '%', 'clean' => true));
