@@ -13,6 +13,5 @@ if(false) {
 	$pagination = new PaginationHelper();
 	$rss = new RssHelper();
 	$xml = new XmlHelper();
-	$number = new NumberHelper();
 }
 ?>
