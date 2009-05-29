@@ -47,7 +47,7 @@ class VcfHelperTestCase extends CakeTestCase {
 		$result = $this->vcf->attr('timezone', '-05:00');
 		$expected = "TZ:-05\:00\n";
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->vcf->attr('email', 'example@example.com');
 		$expected = "EMAIL;INTERNET:example@example.com\n";
 		$this->assertEqual($result, $expected);
@@ -58,10 +58,12 @@ class VcfHelperTestCase extends CakeTestCase {
  * @return void
  **/
 	function testCall() {
+		$result = $this->vcf->name(array('first' => 'bob', 'last' => 'smith', 'middle' => 'J'));
+
 		$result = $this->vcf->fullName('Mark Story');
 		$expected = "FN:Mark Story\n";
 		$this->assertEqual($result, $expected);
-		
+
 		$this->expectError();
 		$this->vcf->stupidMethodName('foobar');
 	}
@@ -91,7 +93,6 @@ class VcfHelperTestCase extends CakeTestCase {
 		$expected = "ADR;HOME:;;555 somestreet rd.;Toronto;Ontario;;Canada;\n" .
 					"LABEL;POSTAL;HOME;ENCODING=QUOTED-PRINTABLE:555 somestreet rd.=0D=0AToronto, Ontario =0D=0ACanada\n";
 		$this->assertEqual($result, $expected);
-
 	}
 
 	function tearDown() {
